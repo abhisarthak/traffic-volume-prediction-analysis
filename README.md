@@ -104,8 +104,68 @@ traffic_volume_prediction_presentation.pptx → Project presentation
 
 ## Visualization Example
 
-![Traffic Pattern](images/Avg_traffic_by_holiday.png)
+## Data Visualizations
 
+### Average Traffic by Holiday
+![Average Traffic by Holiday](images/Avg_traffic_by_holiday.png)
+
+This visualization compares average traffic volume during holiday and non-holiday periods.
+
+---
+
+### Holiday Traffic Pattern
+![Holiday Traffic Pattern](images/Holiday_traffic_pattern.png)
+
+This chart illustrates how traffic behavior changes around holidays.
+
+---
+
+### Prediction Error by Hour
+![Prediction Error by Hour](images/avg_error_by_hour.png)
+
+This analysis highlights model prediction errors across different hours of the day.
+
+---
+
+### Average Traffic by Holiday (Alternative Analysis)
+![Average Traffic by Holiday Alternative](images/avg_traffic_by_holiday_.png)
+
+Additional comparison of traffic volume patterns during holidays.
+
+---
+
+### Average Traffic by Hour
+![Average Traffic by Hour](images/avg_traffic_by_hour.png)
+
+This visualization identifies peak and off-peak traffic periods throughout the day.
+
+---
+
+### Average Traffic by Hour on Holidays
+![Average Traffic by Hour on Holidays](images/avg_traffic_by_hour_on_holiday.png)
+
+This chart shows hourly traffic variations specifically during holiday periods.
+
+---
+
+### Holiday Traffic Distribution
+![Holiday Traffic Distribution](images/box_plot_by_holiday.png)
+
+Box plot analysis showing traffic volume distribution during holiday and non-holiday periods.
+
+---
+
+### Traffic Pattern by Holiday
+![Traffic Pattern by Holiday](images/traffic_pattern_by_holiday.png)
+
+Visualization of traffic trends and seasonal holiday effects.
+
+---
+
+### Traffic Volume by Weather Conditions
+![Traffic Volume by Weather Conditions](images/traffic_vol_by_weather_types.png)
+
+Analysis of how different weather conditions affect traffic volume.
 ---
 
 ## Future Improvements
