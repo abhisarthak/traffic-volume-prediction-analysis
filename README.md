@@ -67,20 +67,35 @@ Random Forest performed significantly better than Linear Regression.
 - Rush hour periods are harder to predict accurately.
 
 ---
+## Business Impact
+
+Accurate traffic forecasting can help:
+
+- Reduce urban congestion
+- Improve traffic signal planning
+- Support transportation infrastructure decisions
+- Optimize public transport deployment
+- Improve commuter experience
+  ---
 
 ## Project Structure
 
-- `week1_project.ipynb` → Complete notebook
-- `Week1_Traffic_Report_Abhishek.docx` → Detailed report
-- `images/` → Project screenshots and graphs
+traffic_volume_prediction.ipynb → Complete notebook
+
+traffic_analysis_report.pdf → Detailed project report
+
+traffic_volume_prediction_presentation.pptx → Project presentation
+
+images/ → Visualizations and screenshots
 
 ---
 
 ## Future Improvements
-- Add lag features
-- Try XGBoost models
-- Deploy using Streamlit
-- Build real-time traffic dashboard
+• Add lag and rolling-window features
+• Compare with XGBoost and LightGBM
+• Develop Streamlit dashboard
+• Real-time traffic forecasting
+• Generate congestion mitigation recommendations
 
 ---
 
