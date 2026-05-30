@@ -24,7 +24,23 @@ The project includes:
 
 ---
 
+## Project Pipeline
+
+1. Traffic Data Collection
+2. Data Cleaning & Preprocessing
+3. Exploratory Data Analysis (EDA)
+4. Feature Engineering
+5. Train-Test Split
+6. Linear Regression Model Development
+7. Random Forest Regression Model Development
+8. Model Evaluation and Comparison
+9. Traffic Volume Prediction
+10. Insight Generation for Transportation Planning
+
+---
+
 ## Dataset Features
+
 The dataset contains:
 - Traffic volume
 - Hour
