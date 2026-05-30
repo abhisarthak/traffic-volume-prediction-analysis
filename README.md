@@ -104,7 +104,7 @@ traffic_volume_prediction_presentation.pptx → Project presentation
 
 ## Visualization Example
 
-![Traffic Pattern](images/traffic_pattern_by_holiday.png)
+![Traffic Pattern](images/Avg_traffic_by_holiday.png)
 
 ---
 
