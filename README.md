@@ -102,7 +102,9 @@ traffic_analysis_report.pdf → Detailed project report
 
 traffic_volume_prediction_presentation.pptx → Project presentation
 
-images/ → Visualizations and screenshots
+## Visualization Example
+
+![Traffic Pattern](images/traffic_pattern_by_holiday.png)
 
 ---
 
