@@ -16,12 +16,13 @@ The project includes:
 
 ## Technologies Used
 - Python
+- SQL
+- SQLite
 - Pandas
 - NumPy
 - Matplotlib
-- Scikit-learn
+- Scikit-Learn
 - Google Colab
-
 ---
 
 ## Project Pipeline
@@ -96,11 +97,17 @@ Accurate traffic forecasting can help:
 
 ## Project Structure
 
-traffic_volume_prediction.ipynb → Complete notebook
+traffic_volume_prediction.ipynb
+→ Week 1 ML and Traffic Analysis
 
-traffic_analysis_report.pdf → Detailed project report
+traffic_volume_sql_analytics.ipynb
+→ Week 4 SQL Integration and Analytics
 
-traffic_volume_prediction_presentation.pptx → Project presentation
+traffic_analysis_report.pdf
+→ Detailed Project Report
+
+traffic_volume_prediction_presentation.pptx
+→ Project Presentation
 
 ## Visualization Example
 
@@ -167,6 +174,76 @@ Visualization of traffic trends and seasonal holiday effects.
 
 Analysis of how different weather conditions affect traffic volume.
 ---
+
+## Project Evolution
+
+### Phase 1: Traffic Volume Prediction (Week 1)
+
+Notebook:
+traffic_volume_prediction.ipynb
+
+Covered:
+
+- Data Cleaning and Preprocessing
+- Exploratory Data Analysis (EDA)
+- Feature Engineering
+- Linear Regression
+- Random Forest Regression
+- Model Evaluation
+- Traffic Pattern Analysis
+- Business Insights
+
+### Phase 2: SQL Analytics Integration (Week 4)
+
+Notebook:
+traffic_volume_sql_analytics.ipynb
+
+Objective:
+
+To simulate a real-world analytics workflow by integrating SQL with the existing traffic prediction project.
+
+Key Activities:
+
+- Created SQLite database from traffic dataset
+- Stored data using Pandas to_sql()
+- Queried data using read_sql_query()
+- Performed SQL aggregations
+- Combined SQL with Pandas for analysis
+- Generated business insights from SQL queries
+
+SQL Concepts Demonstrated:
+
+- SELECT
+- WHERE
+- GROUP BY
+- ORDER BY
+- AVG()
+- COUNT()
+- LIMIT
+
+Business Insights Generated:
+
+- Peak traffic occurs at 4 PM (Hour 16)
+- Weekday traffic is higher than weekend traffic
+- Thursday and Friday are the busiest days
+- Traffic volume decreases significantly on holidays
+- Traffic patterns are primarily time-driven
+
+Analytics Pipeline:
+
+Traffic CSV
+↓
+SQLite Database
+↓
+SQL Queries
+↓
+Pandas Analysis
+↓
+Visualization
+↓
+Machine Learning
+↓
+Business Insights
 
 ## Future Improvements
 • Add lag and rolling-window features
