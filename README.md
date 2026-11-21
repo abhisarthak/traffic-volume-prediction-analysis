@@ -845,3 +845,388 @@ python -m streamlit run dashboard/app.py
 The application source code is located in the `dashboard/` directory.
 
 
+## Project Results, Key Insights & Practical Applications
+
+The project combines exploratory data analysis, machine learning, SQL-based analytics, and interactive visualization to understand historical traffic behaviour and predict traffic volume.
+
+The results demonstrate how historical temporal and calendar-related information can be used to identify recurring traffic patterns and estimate traffic volume.
+
+### 1. Final Model Performance
+
+The selected HistGradientBoosting regression model was evaluated on a separate test dataset covering January to May 2017.
+
+| Evaluation Metric | Result |
+|---|---:|
+| Mean Absolute Error (MAE) | 243.72 |
+| Root Mean Squared Error (RMSE) | 372.75 |
+| R² Score | 0.9654 |
+
+The model achieved an R² score of 0.9654, indicating that it explained approximately 96.54% of the variation in traffic volume in the test dataset.
+
+The MAE of 243.72 indicates an average absolute prediction error of approximately 244 vehicles per observation.
+
+### 2. Key Traffic Pattern Insights
+
+The exploratory analysis and SQL-based analytics identified several recurring traffic patterns.
+
+**Hourly Traffic Variation**
+
+- 4 PM recorded the highest average traffic volume.
+- 5 PM and 3 PM were the next busiest hours.
+- Traffic volume varied considerably across the 24-hour period.
+
+**Day-of-Week Variation**
+
+- Thursday recorded the highest average traffic volume.
+- Friday followed closely behind.
+- Sunday recorded the lowest average traffic volume.
+- Weekdays generally experienced higher traffic volume than weekends.
+
+**Holiday Traffic Patterns**
+
+- Recorded holiday categories generally showed lower average traffic volume than observations labelled `None`.
+- Holiday observations were limited in number, so these results should be interpreted cautiously.
+
+### 3. Model Error Analysis Insights
+
+The prediction error analysis provided additional information about where the model performed well and where it faced challenges.
+
+- The Night period had the lowest MAE at 182.47 vehicles.
+- The Morning Peak period had the highest MAE at 365.08 vehicles.
+- The Evening Peak period recorded an MAE of 322.52 vehicles.
+- Weekend predictions had higher MAE than weekday predictions.
+
+These findings indicate that prediction accuracy was not uniform across all traffic conditions.
+
+In particular, peak traffic periods and weekend observations were relatively more challenging for the model.
+
+### 4. Practical Applications
+
+The analytical findings and prediction model could support several traffic-monitoring and planning activities.
+
+| Application | Potential Use |
+|---|---|
+| Traffic Monitoring | Identify hours with historically high traffic volume. |
+| Peak-Hour Planning | Understand recurring high-traffic periods and support planning around them. |
+| Calendar-Based Planning | Compare expected traffic patterns across weekdays, weekends, and holidays. |
+| Traffic Volume Estimation | Generate traffic volume estimates for selected time and calendar scenarios. |
+| Historical Traffic Analysis | Support data-driven examination of recurring traffic patterns. |
+
+These are potential applications of the developed analytical approach. The project does not claim that the model has been integrated into a live traffic management system.
+
+### 5. Overall Project Outcomes
+
+The project demonstrates an end-to-end data analytics and machine learning workflow:
+
+1. Prepared historical traffic data through data cleaning and preprocessing.
+2. Performed exploratory analysis to identify temporal, weekly, and holiday-related traffic patterns.
+3. Created temporal, calendar, cyclical, and weather-derived features.
+4. Compared Linear Regression, Random Forest, and HistGradientBoosting regression models.
+5. Selected and evaluated a HistGradientBoosting model using a chronological train-validation-test approach.
+6. Analysed prediction errors across different traffic periods and day types.
+7. Used SQLite and SQL queries to generate structured traffic analytics.
+8. Saved the trained model and feature list for reuse in an interactive application.
+
+The final outcome is a reproducible analytical workflow that combines historical traffic analysis, machine learning-based prediction, SQL analytics, and an interactive application.
+
+## Limitations & Future Improvements
+
+Although the project achieved promising prediction performance, several limitations remain. These limitations also provide opportunities for further development.
+
+### 1. Project Limitations
+
+**1. Missing Historical Time Periods**
+
+The original dataset contained gaps in its hourly observations.
+
+After removing duplicate timestamps, 28,589 unique observations remained, compared with 40,527 expected hourly timestamps across the observation period.
+
+This means approximately 29.46% of the expected hourly timestamps were missing.
+
+These gaps may limit the model's ability to learn continuous traffic patterns across the entire observation period.
+
+**2. Limited Input Features in the Final Model**
+
+The final HistGradientBoosting model uses only five temporal and calendar-related features:
+
+- `hour`
+- `day_of_week`
+- `is_weekend`
+- `month`
+- `is_holiday_flag`
+
+Although weather-related features were explored, they did not consistently improve all evaluation metrics.
+
+The final model therefore does not use weather information, recent traffic observations, or other external factors.
+
+**3. Absence of Lag-Based Features**
+
+The final model does not use previous traffic volume observations as input.
+
+Features such as traffic volume one hour earlier, traffic volume on the previous day, and rolling averages could potentially provide additional information about short-term traffic behaviour.
+
+**4. Limited Generalization Assessment**
+
+The model was evaluated using a chronological test split from the same dataset.
+
+Although this approach provides a more realistic evaluation than a random split for time-dependent data, the results do not establish how well the model would perform on a different road, geographical region, or independently collected traffic dataset.
+
+**5. No Live Data Integration**
+
+The project focuses on historical traffic analysis and scenario-based prediction.
+
+It does not currently integrate live traffic sensor feeds or automatically update predictions using newly collected traffic observations.
+
+### 2. Future Improvements
+
+The following improvements could make the project more robust and useful.
+
+**1. Add Lag and Rolling Statistical Features**
+
+Introduce historical traffic information such as:
+
+- Previous-hour traffic volume
+- Previous-day traffic volume
+- Previous-week traffic volume
+- Rolling mean traffic volume
+- Rolling standard deviation
+
+These features could help the model capture short-term traffic trends and recurring traffic behaviour.
+
+**2. Improve Feature Engineering**
+
+Explore additional predictive variables, including:
+
+- Public event schedules
+- School and office working calendars
+- Road-specific characteristics
+- Weather conditions
+- Seasonal and special-event indicators
+
+The contribution of each feature category can be evaluated through controlled model comparisons.
+
+**3. Explore Advanced Forecasting Models**
+
+Compare the existing HistGradientBoosting model with additional approaches, such as:
+
+- XGBoost
+- LightGBM
+- Random Forest with improved feature engineering
+- Time-series forecasting models
+
+The objective would be to determine whether more advanced approaches provide meaningful improvements over the existing model.
+
+**4. Improve Validation and Generalization**
+
+Future experiments could include:
+
+- Expanding-window time-series cross-validation
+- Evaluation across different time periods
+- Testing on independently collected traffic datasets
+- Performance comparison across different traffic conditions
+
+This would provide a better understanding of model stability and generalization.
+
+**5. Integrate Live Traffic Data**
+
+Connect the application to a traffic data source or sensor feed to support predictions using recently observed traffic information.
+
+This would move the project beyond historical scenario-based prediction toward a continuously updated traffic prediction system.
+
+**6. Improve Dashboard and Deployment**
+
+Further development could include:
+
+- Hosting the Streamlit application online.
+- Adding historical traffic trend visualizations.
+- Comparing actual and predicted traffic volume.
+- Displaying prediction errors over time.
+- Adding automated model monitoring and periodic retraining.
+
+### 3. Future Development Roadmap
+
+| Priority | Improvement | Expected Benefit |
+|---|---|---|
+| High | Lag and rolling features | Capture recent traffic behaviour |
+| High | Time-series cross-validation | Improve reliability assessment |
+| Medium | Additional external features | Explore additional predictive signals |
+| Medium | Advanced model comparison | Evaluate alternative algorithms |
+| Medium | Dashboard enhancements | Improve analytical usability |
+| Long-term | Live traffic integration | Support continuously updated predictions |
+| Long-term | Model monitoring and retraining | Maintain performance as traffic patterns change |
+
+### Conclusion
+
+The current project establishes a foundation for historical traffic analysis and machine learning-based traffic volume prediction.
+
+Future development will focus on incorporating historical traffic dependencies, improving validation, exploring additional predictive features, and moving toward a more dynamic prediction system.
+
+## Installation, Dependencies & How to Run the Project
+
+Follow the steps below to set up the project and run it locally.
+
+### 1. Clone the Repository
+
+Clone the GitHub repository:
+
+```bash
+git clone https://github.com/abhisarthak/traffic-volume-prediction-analysis.git
+```
+
+Navigate to the project directory:
+
+```bash
+cd traffic-volume-prediction-analysis
+```
+
+### 2. Create a Virtual Environment
+
+Creating a virtual environment helps keep project dependencies separate from other Python projects.
+
+```bash
+python -m venv venv
+```
+
+Activate the environment.
+
+**macOS / Linux:**
+
+```bash
+source venv/bin/activate
+```
+
+**Windows:**
+
+```bash
+venv\Scripts\activate
+```
+
+### 3. Install Dependencies
+
+Install the required packages using the repository's dependency file:
+
+```bash
+pip install -r requirements.txt
+```
+
+The main libraries used in the project include:
+
+| Library | Purpose |
+|---|---|
+| Pandas | Data manipulation and preprocessing |
+| NumPy | Numerical operations and feature engineering |
+| Matplotlib | Data visualization |
+| Scikit-learn | Regression models and model evaluation |
+| Joblib | Model serialization and loading |
+| Streamlit | Interactive dashboard application |
+| SQLite3 | SQL-based data storage and analytics |
+
+**Note:** SQLite3 is included with Python's standard library and does not normally require a separate pip installation.
+
+### 4. Run the Machine Learning Notebook
+
+Open Jupyter Notebook:
+
+```bash
+jupyter notebook
+```
+
+Open:
+
+```text
+traffic_volume_prediction.ipynb
+```
+
+The notebook covers:
+
+1. Data loading and preprocessing.
+2. Exploratory Data Analysis.
+3. Temporal and calendar-based feature engineering.
+4. Regression model development.
+5. Model comparison and hyperparameter tuning.
+6. Final model evaluation and error analysis.
+7. Saving the trained model and feature list.
+
+Ensure that the dataset path in the notebook matches the location of `Train.csv` in your local project.
+
+### 5. Run the SQL Analytics Notebook
+
+Open:
+
+```text
+traffic_volume_sql_analytics.ipynb
+```
+
+This notebook demonstrates:
+
+- Creating an SQLite database.
+- Storing traffic data in a database table.
+- Executing SQL aggregation queries.
+- Analysing traffic patterns by hour, weekday, and holiday.
+- Retrieving SQL query results into Pandas for visualization.
+
+### 6. Run the Streamlit Dashboard
+
+From the project root directory, execute:
+
+```bash
+python -m streamlit run dashboard/app.py
+```
+
+Streamlit will start the application and provide a local URL in the terminal.
+
+### 7. Model Files
+
+The project includes the following saved model artifacts:
+
+```text
+models/
+│
+├── traffic_prediction_model.pkl
+└── model_features.pkl
+```
+
+The trained model and its corresponding feature list must be available at the paths expected by the dashboard application.
+
+### 8. Project Execution Workflow
+
+The overall execution flow is:
+
+1. Install the project dependencies.
+2. Load and prepare the historical traffic dataset.
+3. Run the machine learning notebook to reproduce model development.
+4. Run the SQL notebook to reproduce traffic analytics.
+5. Use the saved model artifacts with the Streamlit application.
+
+This setup allows users to explore the analytical workflow, reproduce the modelling experiments, and run the interactive prediction application.
+
+## Conclusion
+
+The Traffic Volume Prediction & Analysis project demonstrates an end-to-end application of data analytics, machine learning, and SQL to understand historical traffic patterns and predict traffic volume.
+
+Starting with raw traffic data, the project involved data cleaning, exploratory data analysis, temporal and calendar-based feature engineering, regression modelling, model evaluation, and SQL-based analytical queries.
+
+Multiple regression algorithms were evaluated, including Linear Regression, Random Forest, and HistGradientBoosting. The final HistGradientBoosting model achieved an MAE of **243.72**, an RMSE of **372.75**, and an R² score of **0.9654** on the held-out test dataset.
+
+Beyond predictive modelling, the project identified meaningful historical traffic patterns, including peak-hour variations, differences between weekdays and weekends, and lower average traffic across the recorded holiday categories.
+
+The project also demonstrates the integration of Python and SQLite for structured traffic analytics, along with model serialization for reuse in an interactive Streamlit application.
+
+Overall, this project provided practical experience in building a complete data analytics and machine learning workflow, from raw data preparation to model evaluation and application development.
+
+### Key Takeaways
+
+- Developed an end-to-end traffic volume prediction workflow.
+- Applied data preprocessing, exploratory analysis, and feature engineering.
+- Compared multiple regression algorithms and selected a HistGradientBoosting model.
+- Evaluated model performance using MAE, RMSE, and R².
+- Performed residual and segment-based prediction error analysis.
+- Used SQLite and SQL for structured traffic analytics.
+- Saved the trained model and feature list for application-level reuse.
+- Explored interactive prediction through Streamlit.
+
+### Author
+
+**Abhishek Kumar**
+
+GitHub: [abhisarthak](https://github.com/abhisarthak)
