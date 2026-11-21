@@ -192,3 +192,76 @@ After the cleaning process, the working dataset contained:
 | Duplicate timestamps remaining | 0 |
 
 The cleaned dataset was then used for exploratory data analysis, feature engineering, and machine learning model development.
+
+## Exploratory Data Analysis (EDA)
+
+Exploratory Data Analysis was performed to identify patterns, trends, and relationships between traffic volume and different temporal, calendar, and weather-related variables.
+
+The analysis focused on understanding traffic behaviour across different hours, days of the week, holidays, and weather conditions.
+
+### 1. Hourly Traffic Pattern Analysis
+
+Analysed average traffic volume across different hours of the day to identify periods of high and low traffic activity.
+
+**Key observation:**
+- Traffic volume varies significantly throughout the day.
+- Traffic activity increases during commuting hours.
+- The analysis identified 4 PM (16:00) as the hour with the highest average traffic volume in the SQL-based analysis.
+- Traffic volume generally decreases during late-night and early-morning hours.
+
+### 2. Weekday vs. Weekend Analysis
+
+Compared traffic patterns across working days and weekends to understand differences in travel behaviour.
+
+**Key observation:**
+- Weekdays generally experience higher traffic volumes than weekends.
+- Weekend traffic follows a different pattern from regular working days.
+- These differences indicate that the day of the week is an important factor in explaining traffic variation.
+
+### 3. Day-of-Week Analysis
+
+Examined average traffic volume across individual days of the week.
+
+**Key observation:**
+- Thursday and Friday emerged as the busiest days in the SQL-based analysis.
+- Traffic volume varies across the different days of the week.
+- Weekly patterns provide useful information for understanding recurring traffic behaviour.
+
+### 4. Holiday Traffic Analysis
+
+Compared traffic volume on holidays and non-holidays to understand how special calendar events influence traffic patterns.
+
+**Key observation:**
+- Traffic volume is generally lower on holidays compared with regular working days.
+- Holiday-related patterns differ from typical weekday traffic.
+- Holiday information can therefore contribute to traffic volume prediction.
+
+### 5. Weather-Based Traffic Analysis
+
+Examined traffic volume across different weather conditions to investigate whether weather patterns are associated with changes in traffic activity.
+
+The analysis included weather-related visualizations and comparisons of traffic volume across weather categories.
+
+### EDA Summary
+
+The exploratory analysis highlighted three important characteristics of the dataset:
+
+1. **Temporal patterns:** Traffic volume changes considerably throughout the day.
+2. **Weekly patterns:** Working days and weekends exhibit different traffic behaviour.
+3. **Calendar effects:** Holidays are generally associated with lower traffic volume.
+
+These findings motivated the development of time-based and calendar-related features for the machine learning models.
+
+<img width="669" height="490" alt="image" src="https://github.com/user-attachments/assets/f5bdfb12-ec67-470c-a603-6c7ff37cc83e" />
+
+<img width="700" height="476" alt="image" src="https://github.com/user-attachments/assets/2acd8e18-0ab9-47d5-be8e-9c0ba7c13b76" />
+
+<img width="614" height="460" alt="image" src="https://github.com/user-attachments/assets/fd7526e2-77ff-4154-952c-abb17deb0414" />
+
+<img width="608" height="454" alt="image" src="https://github.com/user-attachments/assets/e1d3f6c0-9bdd-420b-9bac-b10af15475c0" />
+
+
+
+
+
+
