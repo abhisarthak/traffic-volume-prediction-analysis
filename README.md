@@ -1,259 +1,194 @@
-# Traffic Volume Prediction Analysis
+# Traffic Volume Prediction & Analysis
 
 ## Project Overview
-This project focuses on analysing and predicting traffic volume using Python and Machine Learning techniques.
 
-The project includes:
+Traffic Volume Prediction & Analysis is a data analytics and machine learning project focused on understanding historical traffic patterns and predicting traffic volume using time-based and calendar-related features.
+
+The project involves an end-to-end analytical workflow, starting from data cleaning and exploratory data analysis (EDA) to feature engineering, machine learning model development, evaluation, and interactive visualization.
+
+Multiple regression models were explored to understand traffic patterns and evaluate their predictive performance. The project also incorporates SQL-based analytics using SQLite to extract meaningful insights from traffic data.
+
+The developed solution includes an interactive Streamlit dashboard that allows users to explore traffic scenarios and obtain traffic volume predictions.
+
+**Key Components:**
 - Data cleaning and preprocessing
-- Exploratory Data Analysis (EDA)
-- Traffic pattern visualization
-- Feature engineering
-- Linear Regression model
-- Random Forest Regressor model
-- Model comparison and error analysis
+- Exploratory Data Analysis (EDA) and traffic pattern analysis
+- Temporal and calendar-based feature engineering
+- Regression model development and evaluation
+- SQL-based analytics using SQLite
+- Prediction error analysis
+- Interactive traffic prediction dashboard
 
----
+## Problem Statement
 
-## Technologies Used
-- Python
-- SQL
-- SQLite
-- Pandas
-- NumPy
-- Matplotlib
-- Scikit-Learn
-- Google Colab
----
+Urban traffic congestion is a major challenge for transportation systems. Traffic volume varies throughout the day and is influenced by several factors, including time of day, day of the week, month, holidays, and weather conditions.
 
-## Project Pipeline
+Understanding these variations is important for identifying peak traffic periods, analysing travel patterns, and supporting better transportation planning.
 
-1. Traffic Data Collection
-2. Data Cleaning & Preprocessing
-3. Exploratory Data Analysis (EDA)
-4. Feature Engineering
-5. Train-Test Split
-6. Linear Regression Model Development
-7. Random Forest Regression Model Development
-8. Model Evaluation and Comparison
-9. Traffic Volume Prediction
-10. Insight Generation for Transportation Planning
+The objective of this project is to analyse historical traffic data, identify the patterns and factors associated with traffic volume, and develop machine learning models capable of predicting traffic volume based on temporal and calendar-related features.
 
----
+## Project Objectives
 
-## Dataset Features
+The major objectives of this project are:
 
-The dataset contains:
-- Traffic volume
-- Hour
-- Day of week
-- Month
-- Temperature
-- Humidity
-- Wind speed
-- Air pollution index
-- Rain and snow data
-- Holiday information
+1. **Data Understanding:** Examine the historical traffic dataset and understand its structure, variables, and data quality.
 
----
+2. **Data Preprocessing:** Handle duplicate records, missing values, and data inconsistencies to prepare the dataset for analysis.
 
-## Machine Learning Models Used
+3. **Exploratory Data Analysis:** Identify traffic patterns across different hours, weekdays, weekends, months, holidays, and weather conditions.
 
-### 1. Linear Regression
-Used as the baseline prediction model.
+4. **Feature Engineering:** Extract meaningful temporal and calendar-based features to improve the predictive capability of machine learning models.
 
-### 2. Random Forest Regressor
-Used to improve prediction accuracy using ensemble learning.
+5. **Predictive Modelling:** Develop and evaluate regression models to estimate traffic volume using historical patterns.
 
----
+6. **Model Evaluation:** Compare model performance using appropriate evaluation metrics and analyse prediction errors.
 
-## Model Performance
+7. **SQL-Based Analytics:** Use SQLite and SQL queries to perform structured data analysis and extract meaningful traffic-related insights.
 
-| Model | Mean Absolute Error |
-|------|------|
-| Linear Regression | 1607 |
-| Random Forest Regressor | 259 |
+8. **Interactive Visualization:** Develop a Streamlit dashboard to explore traffic scenarios and generate traffic volume predictions.
 
-Random Forest performed significantly better than Linear Regression.
+9. **Decision Support:** Translate analytical findings into insights that can support traffic monitoring and transportation planning.
 
----
 
-## Key Insights
-- Traffic volume is strongly dependent on time-based features.
-- Hour of the day is the most important feature.
-- Weather variables contribute less compared to time variables.
-- Rush hour periods are harder to predict accurately.
+## Dataset Description
 
----
-## Business Impact
+The project uses historical traffic volume data containing timestamp-based observations along with weather and holiday-related information.
 
-Accurate traffic forecasting can help:
+The dataset is used to analyse variations in traffic volume over time and develop machine learning models for traffic volume prediction.
 
-- Reduce urban congestion
-- Improve traffic signal planning
-- Support transportation infrastructure decisions
-- Optimize public transport deployment
-- Improve commuter experience
-  ---
+### Dataset Overview
 
-## Project Structure
+| Attribute | Description |
+|---|---|
+| Dataset file | `Train.csv` |
+| Initial records | 33,750 |
+| Initial columns | 15 |
+| Target variable | `traffic_volume` |
+| Data type | Time-series / tabular data |
+| Observation frequency | Hourly traffic observations |
 
-traffic_volume_prediction.ipynb
-→ Week 1 ML and Traffic Analysis
+### Key Categories of Features
 
-traffic_volume_sql_analytics.ipynb
-→ Week 4 SQL Integration and Analytics
+The dataset contains information belonging to the following categories:
 
-traffic_analysis_report.pdf
-→ Detailed Project Report
+| Feature Category | Description |
+|---|---|
+| Traffic Information | Historical traffic volume |
+| Temporal Features | Date and time information |
+| Calendar Features | Day of the week, month, and holiday information |
+| Weather Features | Temperature, rainfall, snowfall, cloud coverage, and weather conditions |
 
-traffic_volume_prediction_presentation.pptx
-→ Project Presentation
+### Dataset Preparation
 
-## Visualization Example
+During the initial data inspection and cleaning process:
 
-## Data Visualizations
+- Identified 5,161 records associated with duplicate timestamps.
+- Removed duplicate timestamp records to obtain 28,589 unique timestamp observations.
+- Checked for missing values and data inconsistencies.
+- Investigated missing hourly timestamps across the observation period.
+- Examined anomalous weather observations before using the data for analysis.
 
-### Average Traffic by Holiday
-![Average Traffic by Holiday](images/Avg_traffic_by_holiday.png)
+After cleaning, the working dataset contained **28,589 records and 15 columns**.
 
-This visualization compares average traffic volume during holiday and non-holiday periods.
+**Note:** Missing hourly timestamps were investigated separately and were not artificially filled during this cleaning process.
 
----
+## Repository Structure
 
-### Holiday Traffic Pattern
-![Holiday Traffic Pattern](images/Holiday_traffic_pattern.png)
+The repository is organized into separate directories for data, machine learning models, visualizations, and dashboard development.
 
-This chart illustrates how traffic behavior changes around holidays.
+```text
+traffic-volume-prediction-analysis/
+│
+├── dashboard/
+│   └── app.py
+│
+├── data/
+│   └── Train.csv
+│
+├── images/
+│   ├── Avg_traffic_by_holiday.png
+│   ├── Holiday_traffic_pattern.png
+│   ├── avg_error_by_hour.png
+│   ├── avg_traffic_by_holiday_.png
+│   ├── avg_traffic_by_hour.png
+│   ├── avg_traffic_by_hour_on_holiday.png
+│   ├── box_plot_by_holiday.png
+│   ├── traffic_patter_by_holiday.png
+│   └── traffic_vol_by_weather_types.png
+│
+├── models/
+│   ├── model_features.pkl
+│   └── traffic_prediction_model.pkl
+│
+├── traffic_volume_prediction.ipynb
+├── traffic_volume_sql_analytics.ipynb
+├── traffic_analysis_report.pdf
+├── requirements.txt
+├── LICENSE
+└── README.md
+```
 
----
+### Directory and File Description
 
-### Prediction Error by Hour
-![Prediction Error by Hour](images/avg_error_by_hour.png)
+| File / Directory | Description |
+|---|---|
+| `data/` | Contains the traffic dataset used for analysis and model development. |
+| `images/` | Stores visualizations generated during exploratory data analysis and model evaluation. |
+| `models/` | Contains the serialized trained model and its required feature names. |
+| `dashboard/` | Contains the Streamlit application for interactive traffic volume prediction. |
+| `traffic_volume_prediction.ipynb` | Main notebook covering data preprocessing, EDA, feature engineering, model development and evaluation. |
+| `traffic_volume_sql_analytics.ipynb` | Notebook demonstrating SQL-based analytics using SQLite. |
+| `traffic_analysis_report.pdf` | Detailed project report documenting the analysis and findings. |
+| `requirements.txt` | Lists the Python dependencies required to run the project. |
+| `LICENSE` | Defines the licensing terms for the repository. |
+| `README.md` | Provides project documentation and instructions. |
 
-This analysis highlights model prediction errors across different hours of the day.
+## Data Cleaning & Preprocessing
 
----
+Before performing exploratory data analysis and developing machine learning models, the raw traffic dataset was examined and cleaned to improve data quality and consistency.
 
-### Average Traffic by Holiday (Alternative Analysis)
-![Average Traffic by Holiday Alternative](images/avg_traffic_by_holiday_.png)
+The initial dataset contained **33,750 records and 15 columns**.
 
-Additional comparison of traffic volume patterns during holidays.
+### 1. Duplicate Timestamp Handling
 
----
+During data inspection, 5,161 records associated with duplicate timestamps were identified.
 
-### Average Traffic by Hour
-![Average Traffic by Hour](images/avg_traffic_by_hour.png)
+Duplicate timestamp records were removed to maintain unique timestamp observations in the working dataset.
 
-This visualization identifies peak and off-peak traffic periods throughout the day.
+- Initial records: 33,750
+- Duplicate timestamp records identified: 5,161
+- Records after duplicate removal: 28,589
 
----
+### 2. Missing Timestamp Analysis
 
-### Average Traffic by Hour on Holidays
-![Average Traffic by Hour on Holidays](images/avg_traffic_by_hour_on_holiday.png)
+After removing duplicate timestamps, the dataset was examined for missing hourly observations.
 
-This chart shows hourly traffic variations specifically during holiday periods.
+The analysis identified gaps in the hourly time series. These missing timestamps were investigated separately rather than automatically filling them with artificially generated traffic values.
 
----
+This helped preserve the distinction between observed traffic measurements and periods for which no observations were available.
 
-### Holiday Traffic Distribution
-![Holiday Traffic Distribution](images/box_plot_by_holiday.png)
+### 3. Missing Value Inspection
 
-Box plot analysis showing traffic volume distribution during holiday and non-holiday periods.
+The dataset was checked for missing values across its columns.
 
----
+The holiday-related information contained a large number of null entries. These values were examined as part of the holiday feature preparation.
 
-### Traffic Pattern by Holiday
-![Traffic Pattern by Holiday](images/traffic_pattern_by_holiday.png)
+### 4. Weather Data Anomaly Detection
 
-Visualization of traffic trends and seasonal holiday effects.
+Weather variables were examined to identify unusual or extreme observations.
 
----
+An extreme rainfall value of 9831.3 was identified during the initial inspection. The rainfall data was subsequently cleaned, with the maximum reported rainfall value reduced to 55.63.
 
-### Traffic Volume by Weather Conditions
-![Traffic Volume by Weather Conditions](images/traffic_vol_by_weather_types.png)
+### 5. Final Dataset
 
-Analysis of how different weather conditions affect traffic volume.
----
+After the cleaning process, the working dataset contained:
 
-## Project Evolution
+| Attribute | Value |
+|---|---:|
+| Initial records | 33,750 |
+| Initial columns | 15 |
+| Records after cleaning | 28,589 |
+| Final columns | 15 |
+| Duplicate timestamps remaining | 0 |
 
-### Phase 1: Traffic Volume Prediction (Week 1)
-
-Notebook:
-traffic_volume_prediction.ipynb
-
-Covered:
-
-- Data Cleaning and Preprocessing
-- Exploratory Data Analysis (EDA)
-- Feature Engineering
-- Linear Regression
-- Random Forest Regression
-- Model Evaluation
-- Traffic Pattern Analysis
-- Business Insights
-
-### Phase 2: SQL Analytics Integration (Week 4)
-
-Notebook:
-traffic_volume_sql_analytics.ipynb
-
-Objective:
-
-To simulate a real-world analytics workflow by integrating SQL with the existing traffic prediction project.
-
-Key Activities:
-
-- Created SQLite database from traffic dataset
-- Stored data using Pandas to_sql()
-- Queried data using read_sql_query()
-- Performed SQL aggregations
-- Combined SQL with Pandas for analysis
-- Generated business insights from SQL queries
-
-SQL Concepts Demonstrated:
-
-- SELECT
-- WHERE
-- GROUP BY
-- ORDER BY
-- AVG()
-- COUNT()
-- LIMIT
-
-Business Insights Generated:
-
-- Peak traffic occurs at 4 PM (Hour 16)
-- Weekday traffic is higher than weekend traffic
-- Thursday and Friday are the busiest days
-- Traffic volume decreases significantly on holidays
-- Traffic patterns are primarily time-driven
-
-Analytics Pipeline:
-
-Traffic CSV
-↓
-SQLite Database
-↓
-SQL Queries
-↓
-Pandas Analysis
-↓
-Visualization
-↓
-Machine Learning
-↓
-Business Insights
-
-## Future Improvements
-• Add lag and rolling-window features
-• Compare with XGBoost and LightGBM
-• Develop Streamlit dashboard
-• Real-time traffic forecasting
-• Generate congestion mitigation recommendations
-
----
-
-## Author
-Abhishek Kumar
-IIT Kharagpur
+The cleaned dataset was then used for exploratory data analysis, feature engineering, and machine learning model development.
