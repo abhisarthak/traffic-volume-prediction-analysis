@@ -495,6 +495,353 @@ The final model was subsequently serialized using Joblib and saved for integrati
 **Final Input Features:** `hour`, `day_of_week`, `is_weekend`, `month`, and `is_holiday_flag`.
 
 
+## Model Evaluation & Error Analysis
 
+After training the final HistGradientBoosting model, its performance was evaluated on the unseen test dataset covering January to May 2017.
+
+In addition to evaluating overall predictive performance, error analysis was performed to understand how prediction errors varied across hours of the day, traffic periods, and day types.
+
+### 1. Evaluation Metrics
+
+Three regression metrics were used to evaluate the model.
+
+| Metric | Description | Interpretation |
+|---|---|---|
+| MAE | Mean Absolute Error | Measures the average absolute difference between actual and predicted traffic volume. |
+| RMSE | Root Mean Squared Error | Penalizes larger prediction errors more heavily than MAE. |
+| R² Score | Coefficient of Determination | Measures how much of the variation in traffic volume is explained by the model. |
+
+### 2. Overall Test Performance
+
+The final model achieved the following performance on the test dataset:
+
+| Metric | Result |
+|---|---:|
+| MAE | 243.72 |
+| RMSE | 372.75 |
+| R² Score | 0.9654 |
+
+The results indicate that the model explained approximately 96.54% of the variation in traffic volume within the test dataset.
+
+The MAE of approximately 244 means that the model's predictions differed from actual traffic volume by about 244 vehicles per observation on average.
+
+The higher RMSE compared with MAE indicates that some observations had considerably larger prediction errors.
+
+### 3. Residual Analysis
+
+Residuals were calculated as:
+
+`Residual = Actual Traffic Volume − Predicted Traffic Volume`
+
+Residual analysis was performed to understand the direction and distribution of prediction errors.
+
+The following statistics were obtained:
+
+| Residual Statistic | Value |
+|---|---:|
+| Mean | 115.47 |
+| Standard Deviation | 354.47 |
+| Minimum | -3,548.88 |
+| 25th Percentile | -38.79 |
+| Median | 77.58 |
+| 75th Percentile | 271.36 |
+| Maximum | 2,460.17 |
+
+**Key observations:**
+
+- The positive mean residual indicates that the model underpredicted traffic volume on average.
+- The positive median residual also indicates a tendency toward underprediction across the test observations.
+- The negative minimum residual indicates that the model substantially overpredicted traffic volume for some observations.
+- The large difference between the minimum and maximum residuals indicates that prediction errors were not uniform across all observations.
+
+Two visualizations were used for further investigation:
+
+- Residual distribution histogram to examine the spread and direction of errors.
+- Residuals versus predicted values plot to inspect how errors varied with predicted traffic volume.
+
+### 4. Prediction Error by Hour of the Day
+
+The model's Mean Absolute Error was calculated separately for each hour of the day.
+
+This analysis helped investigate whether prediction accuracy remained consistent throughout the 24-hour cycle.
+
+An hourly error bar chart was generated to compare prediction errors across different hours.
+
+This is useful because traffic behaviour changes considerably throughout the day, and a model may perform differently during low-traffic and high-traffic periods.
+
+### 5. Prediction Error by Traffic Period
+
+The test observations were grouped into four traffic periods based on the hour of the day.
+
+| Traffic Period | Hour Range | Observations | MAE |
+|---|---|---:|---:|
+| Night | 00:00–05:00 and 19:00–23:00 | 1,494 | 182.47 |
+| Morning Peak | 06:00–09:00 | 537 | 365.08 |
+| Daytime | 10:00–15:00 | 821 | 236.65 |
+| Evening Peak | 16:00–18:00 | 408 | 322.52 |
+
+**Key observations:**
+
+- The lowest MAE was observed during the Night period.
+- The Morning Peak had the highest MAE.
+- The Evening Peak also showed relatively high prediction error.
+- Prediction errors were higher during peak traffic periods than during the Night period.
+
+This suggests that predicting traffic volume during periods of heavy traffic was more challenging for the model.
+
+### 6. Weekday vs. Weekend Prediction Performance
+
+The test dataset was also divided into weekdays and weekends to examine whether prediction accuracy differed across day types.
+
+| Day Type | Observations | MAE | RMSE | Average Actual Traffic |
+|---|---:|---:|---:|---:|
+| Weekday | 2,325 | 228.35 | 366.08 | 3,628.20 |
+| Weekend | 935 | 281.95 | 388.85 | 2,757.58 |
+
+**Key observations:**
+
+- The model achieved lower MAE on weekdays than on weekends.
+- Weekend predictions had higher MAE and RMSE.
+- Average actual traffic volume was higher on weekdays than on weekends in the test dataset.
+
+This indicates that the model's prediction accuracy varied with the type of day.
+
+### 7. Overall Evaluation Insights
+
+The evaluation and error analysis highlighted several important findings:
+
+1. The final model achieved an R² score of 0.9654 on the held-out test dataset.
+2. Prediction errors varied across different hours and traffic periods.
+3. Peak traffic periods were more difficult to predict than the Night period.
+4. Weekday predictions were more accurate than weekend predictions based on MAE and RMSE.
+5. Residual analysis showed a tendency toward underprediction on average, alongside some substantial individual prediction errors.
+
+These findings provide a more complete understanding of model performance than relying on overall evaluation metrics alone.
+
+## SQL-Based Traffic Analytics
+
+In addition to machine learning, SQL was used to perform structured analysis of historical traffic data.
+
+SQLite was integrated with Python to store the traffic dataset in a relational table, execute SQL queries, and extract analytical summaries.
+
+### 1. SQLite Database Integration
+
+The original traffic dataset was loaded into Pandas and stored in an SQLite database.
+
+The following tools were used:
+
+- `sqlite3` to establish the SQLite database connection.
+- `DataFrame.to_sql()` to transfer the dataset from Pandas into SQLite.
+- `pd.read_sql_query()` to execute SQL queries and retrieve results.
+
+The main database table was named `traffic_data`.
+
+### 2. Basic SQL Data Exploration
+
+SQL queries were used to examine the structure and statistical characteristics of the traffic dataset.
+
+The analysis included:
+
+| SQL Operation | Purpose |
+|---|---|
+| `SELECT` | Retrieve traffic records and selected columns |
+| `COUNT()` | Count the total number of records |
+| `AVG()` | Calculate average traffic volume |
+| `MAX()` | Identify the maximum recorded traffic volume |
+| `MIN()` | Identify the minimum recorded traffic volume |
+| `GROUP BY` | Aggregate traffic observations by hour and day |
+| `ORDER BY` | Sort results based on traffic volume |
+| `LIMIT` | Restrict the number of returned records |
+
+### 3. Hourly Traffic Analysis
+
+SQL aggregation was used to calculate average traffic volume for each hour of the day.
+
+The query grouped observations by the engineered `hour` feature and calculated the average traffic volume.
+
+The results were sorted in descending order to identify the busiest hours.
+
+**Key findings:**
+
+| Rank | Hour | Average Traffic Volume |
+|---:|---|---:|
+| 1 | 4 PM | 5,639.65 |
+| 2 | 5 PM | 5,309.77 |
+| 3 | 3 PM | 5,232.13 |
+| 4 | 2 PM | 4,942.55 |
+| 5 | 1 PM | 4,714.20 |
+
+The analysis identified **4 PM as the busiest hour**, with an average traffic volume of approximately 5,640 vehicles.
+
+The hourly results were also retrieved into Pandas and visualized using Matplotlib.
+
+### 4. Day-of-Week Traffic Analysis
+
+Traffic volume was aggregated by the `day_of_week` feature to compare average traffic across the seven days.
+
+The weekday numbering followed Python's convention:
+
+- Monday = 0
+- Tuesday = 1
+- Wednesday = 2
+- Thursday = 3
+- Friday = 4
+- Saturday = 5
+- Sunday = 6
+
+**Key findings:**
+
+| Day | Average Traffic Volume |
+|---|---:|
+| Monday | 3,328.74 |
+| Tuesday | 3,474.04 |
+| Wednesday | 3,565.68 |
+| Thursday | 3,616.89 |
+| Friday | 3,609.75 |
+| Saturday | 2,742.06 |
+| Sunday | 2,337.17 |
+
+Thursday recorded the highest average traffic volume, closely followed by Friday.
+
+Weekend observations showed lower average traffic volume than weekday observations, with Sunday recording the lowest average.
+
+A bar chart was generated using Matplotlib to visualize the differences across days.
+
+### 5. Holiday-Based Traffic Analysis
+
+SQL aggregation was also used to examine traffic volume across different holiday categories.
+
+The query calculated:
+
+- Average traffic volume for each holiday category.
+- Number of records associated with each category.
+
+The analysis showed that average traffic volume for the recorded holiday categories was generally lower than the average for observations labelled `None`.
+
+For example:
+
+| Category | Average Traffic Volume | Records |
+|---|---:|---:|
+| None | 3,243.18 | 33,707 |
+| New Years Day | 1,331.60 | 5 |
+| Independence Day | 1,044.67 | 3 |
+| Labor Day | 1,035.50 | 4 |
+| Thanksgiving Day | 855.40 | 5 |
+| Christmas Day | 774.60 | 5 |
+
+These results suggest that traffic volume was generally lower on the recorded holidays.
+
+However, the holiday categories contain very few observations, so these averages should be interpreted cautiously rather than treated as conclusive evidence of holiday traffic behaviour.
+
+### 6. SQL Summary Tables
+
+The aggregated results were stored back into SQLite as separate summary tables:
+
+| Table | Description |
+|---|---|
+| `hourly_traffic_summary` | Hourly average traffic volume |
+| `day_traffic_summary` | Average traffic volume by day of the week |
+| `holiday_traffic_summary` | Average traffic volume and record counts by holiday category |
+
+This demonstrated how SQL query results can be organized into reusable analytical tables.
+
+### 7. SQL and Python Integration
+
+The SQL query results were retrieved into Pandas DataFrames for further analysis and visualization.
+
+Matplotlib was used to create hourly traffic and day-of-week visualizations.
+
+The notebook also retrieved the traffic data from SQLite back into Pandas, demonstrating the integration between SQL-based data retrieval and Python-based analysis.
+
+### Key Insights from SQL Analytics
+
+The SQL analysis highlighted three important traffic patterns:
+
+1. **Evening traffic:** 4 PM recorded the highest average traffic volume.
+2. **Weekly variation:** Thursday and Friday had the highest average traffic volumes, while Sunday had the lowest.
+3. **Holiday variation:** Recorded holiday categories generally had lower average traffic volumes than the `None` category, although holiday sample sizes were small.
+
+This SQL-based analysis complemented the machine learning workflow by providing interpretable summaries of historical traffic behaviour.
+
+## Model Deployment & Interactive Streamlit Dashboard
+
+After completing model development and evaluation, the selected HistGradientBoosting model was saved for reuse in an interactive prediction application.
+
+The objective was to make the trained model accessible beyond the Jupyter Notebook, allowing users to explore traffic scenarios and obtain traffic volume predictions.
+
+### 1. Model Serialization Using Joblib
+
+The final trained model was serialized using the Joblib library.
+
+Two separate files were saved:
+
+| File | Purpose |
+|---|---|
+| `traffic_prediction_model.pkl` | Stores the trained HistGradientBoosting regression model. |
+| `model_features.pkl` | Stores the exact list of input features used during model training. |
+
+The model and feature list were saved inside the `models/` directory.
+
+```python
+import joblib
+from pathlib import Path
+
+models_dir = Path("models")
+models_dir.mkdir(exist_ok=True)
+
+joblib.dump(
+    final_model,
+    models_dir / "traffic_prediction_model.pkl"
+)
+
+joblib.dump(
+    list(X_train_final.columns),
+    models_dir / "model_features.pkl"
+)
+```
+
+### 2. Why Was the Feature List Saved Separately?
+
+The final model was trained using five specific input features:
+
+- `hour`
+- `day_of_week`
+- `is_weekend`
+- `month`
+- `is_holiday_flag`
+
+Saving the feature list separately helps maintain consistency between model training and prediction.
+
+When a saved model is used later, the input data must contain the same features in the expected format and order.
+
+This reduces the risk of prediction errors caused by inconsistent input preparation.
+
+### 3. Interactive Dashboard
+
+The project includes a Streamlit dashboard intended to provide an interactive interface for traffic volume prediction.
+
+The dashboard serves as the user-facing layer of the project, connecting the saved machine learning model with an interactive application.
+
+It allows users to explore traffic scenarios and obtain predicted traffic volume without directly executing the model-training notebook.
+
+### 4. Technology Stack
+
+| Technology | Role |
+|---|---|
+| Python | Application programming |
+| Streamlit | Interactive dashboard framework |
+| Scikit-learn | HistGradientBoosting regression model |
+| Joblib | Saving and loading the trained model and feature list |
+| Pandas | Preparing structured model input |
+
+### 5. Running the Application
+
+The Streamlit application can be started from the project root directory using:
+
+```bash
+python -m streamlit run dashboard/app.py
+```
+
+The application source code is located in the `dashboard/` directory.
 
 
