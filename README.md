@@ -272,6 +272,227 @@ Holiday comparison
 
 box_plot_by_holiday.png
 
+## Feature Engineering
+
+Feature engineering was performed to convert raw timestamp, calendar, and weather information into meaningful variables that could help machine learning models capture traffic patterns.
+
+The objective was to represent recurring traffic behaviour, calendar effects, and weather conditions in a structured format suitable for regression models.
+
+### 1. Temporal Feature Extraction
+
+The original `date_time` column was used to extract the following time-based features:
+
+| Feature | Description |
+|---|---|
+| `hour` | Hour of the day (0–23) |
+| `day_of_week` | Day of the week (Monday = 0, Sunday = 6) |
+| `day` | Day of the month |
+| `month` | Month of the year (1–12) |
+| `year` | Calendar year |
+
+These features help the model identify recurring traffic patterns across different times and dates.
+
+### 2. Weekend and Holiday Features
+
+Additional binary features were created to represent calendar-related traffic behaviour.
+
+| Feature | Description |
+|---|---|
+| `is_weekend` | 1 if the observation falls on Saturday or Sunday; otherwise 0 |
+| `is_holiday_flag` | 1 if the observation is a holiday; otherwise 0 |
+| `is_working_day` | 1 if the observation is neither a weekend nor a holiday; otherwise 0 |
+
+These features help distinguish regular working-day traffic from weekend and holiday traffic.
+
+### 3. Cyclical Feature Encoding
+
+Time-related variables such as hours, weekdays, and months have a cyclical nature.
+
+For example, 23:00 and 00:00 are consecutive hours, even though their numerical values appear far apart. Similarly, December and January are adjacent months.
+
+To represent these relationships, sine and cosine transformations were created:
+
+- `hour_sin`, `hour_cos`
+- `day_sin`, `day_cos`
+- `month_sin`, `month_cos`
+
+The transformations use the following general formulas:
+
+\[
+X_{\sin} = \sin\left(\frac{2\pi X}{P}\right)
+\]
+
+\[
+X_{\cos} = \cos\left(\frac{2\pi X}{P}\right)
+\]
+
+Where:
+- \(X\) represents the original time-related feature.
+- \(P\) represents its cycle length (24 hours, 7 days, or 12 months).
+
+This encoding represents cyclical relationships without introducing an artificial numerical gap between the end and beginning of a cycle.
+
+### 4. Weather Feature Engineering
+
+Weather-related variables were also prepared to investigate their potential contribution to traffic volume prediction.
+
+The following derived features were created:
+
+| Feature | Description |
+|---|---|
+| `temperature_c` | Temperature converted from Kelvin to Celsius |
+| `is_raining` | 1 if rainfall is greater than zero; otherwise 0 |
+| `low_visibility` | 1 if visibility is 3 miles or less; otherwise 0 |
+| `cloud_category` | Categorizes cloud coverage as Clear, Partly Cloudy, or Overcast |
+
+Additional weather variables, including humidity, wind speed, wind direction, visibility, rainfall, and cloud coverage, were considered during model experimentation.
+
+### 5. Final Feature Selection
+
+Different feature combinations were evaluated to understand the contribution of temporal and weather-related information.
+
+The final model retained five core features:
+
+| Feature | Role in Prediction |
+|---|---|
+| `hour` | Captures hourly traffic patterns |
+| `day_of_week` | Captures differences across weekdays |
+| `is_weekend` | Distinguishes weekday and weekend traffic |
+| `month` | Captures monthly and seasonal variations |
+| `is_holiday_flag` | Represents holiday-related traffic changes |
+
+These five features were used to train the final HistGradientBoosting model and were also saved alongside the trained model for use in the Streamlit dashboard.
+
+**Important:** Cyclical encodings and weather-derived features were explored during feature engineering and experimentation, but they were not included in the final deployed model.
+
+The final feature set was kept compact while retaining the temporal and calendar information used by the selected model.
+
+
+## Machine Learning Models & Model Development
+
+The objective of the modelling stage was to develop a regression model capable of predicting traffic volume using historical temporal and calendar-related information.
+
+Multiple machine learning algorithms and feature combinations were evaluated to identify a model that could capture the non-linear patterns present in traffic behaviour.
+
+### 1. Chronological Train-Validation-Test Split
+
+Since the dataset contains time-dependent observations, a chronological split was used instead of randomly shuffling the records.
+
+| Dataset | Period | Observations |
+|---|---|---:|
+| Training | October 2012 – December 2015 | 17,491 |
+| Validation | January 2016 – December 2016 | 7,838 |
+| Testing | January 2017 – May 2017 | 3,260 |
+
+The training dataset was used for model fitting, the validation dataset for model comparison and hyperparameter selection, and the test dataset for final performance evaluation.
+
+### 2. Linear Regression — Baseline Model
+
+Linear Regression was implemented as the initial baseline model.
+
+It estimates traffic volume as a linear combination of the input features.
+
+The model was trained using five temporal and calendar-related features:
+
+- `hour`
+- `day_of_week`
+- `month`
+- `is_weekend`
+- `is_holiday_flag`
+
+The baseline helped establish how well a simple linear relationship could explain traffic volume variations.
+
+### 3. Random Forest Regression
+
+Random Forest Regression was implemented to capture non-linear relationships between the input features and traffic volume.
+
+The model combines predictions from multiple decision trees to produce a final prediction.
+
+The following configurations were evaluated:
+
+- Temporal features only
+- Temporal and weather-related features
+- Five core temporal and calendar features
+
+The weather-based experiment included variables such as humidity, temperature, rainfall, visibility, wind speed, and wind direction.
+
+Feature importance was also examined to understand the relative contribution of different variables.
+
+### 4. HistGradientBoosting Regression
+
+HistGradientBoostingRegressor was introduced to evaluate whether a boosting-based approach could improve prediction performance.
+
+Unlike Random Forest, which combines predictions from independently trained trees, gradient boosting builds trees sequentially, with each new tree helping correct errors made by the existing ensemble.
+
+The model was initially trained using the five core features.
+
+Four hyperparameter configurations were evaluated by varying:
+
+- `learning_rate`
+- `max_iter`
+- `max_leaf_nodes`
+- `l2_regularization`
+
+The configurations were compared using Mean Absolute Error (MAE), Root Mean Squared Error (RMSE), and R².
+
+### 5. Model Comparison — Validation Results
+
+The following table presents the validation performance of the main model experiments.
+
+| Model | Features | MAE | RMSE | R² |
+|---|---|---:|---:|---:|
+| Linear Regression | Temporal | 1,564.99 | 1,783.35 | 0.1581 |
+| Random Forest | Temporal | 345.43 | 547.12 | 0.9208 |
+| Random Forest | Temporal + Weather | 339.99 | 558.36 | 0.9175 |
+| Random Forest | Core Features | 345.45 | 547.22 | 0.9207 |
+| HistGradientBoosting | Core Features | 334.95 | 538.27 | 0.9233 |
+
+The validation results showed that tree-based ensemble models performed substantially better than the Linear Regression baseline.
+
+HistGradientBoosting achieved the strongest overall validation performance among the initial model comparisons.
+
+### 6. Hyperparameter Tuning
+
+Four HistGradientBoosting configurations were evaluated using the validation dataset.
+
+| Configuration | Learning Rate | Max Iterations | Max Leaf Nodes | L2 Regularization | MAE | RMSE | R² |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| HGB_1 | 0.03 | 700 | 15 | 1.0 | 333.42 | 538.76 | 0.9232 |
+| HGB_2 | 0.05 | 700 | 31 | 1.0 | 334.95 | 538.27 | 0.9233 |
+| HGB_3 | 0.05 | 500 | 63 | 1.0 | 335.50 | 537.58 | 0.9235 |
+| HGB_4 | 0.08 | 500 | 31 | 2.0 | 334.50 | 537.50 | 0.9235 |
+
+HGB_1 achieved the lowest MAE, while HGB_4 achieved the lowest RMSE and highest R².
+
+HGB_4 was selected as the final configuration because it provided the best RMSE and R² combination with a competitive MAE.
+
+### 7. Final Model Training
+
+After selecting HGB_4 using validation results, the training and validation datasets were combined to create the final training dataset.
+
+- Final training observations: 25,329
+- Final test observations: 3,260
+- Number of input features: 5
+
+The selected HistGradientBoosting model was retrained using the combined training and validation data.
+
+The final model was then evaluated on the separate test dataset covering January to May 2017.
+
+### 8. Final Test Performance
+
+The final model achieved the following results:
+
+| Evaluation Metric | Test Result |
+|---|---:|
+| Mean Absolute Error (MAE) | 243.72 |
+| Root Mean Squared Error (RMSE) | 372.75 |
+| R² Score | 0.9654 |
+
+The final model was subsequently serialized using Joblib and saved for integration with the Streamlit dashboard.
+
+**Selected Model:** HistGradientBoostingRegressor (HGB_4)
+
+**Final Input Features:** `hour`, `day_of_week`, `is_weekend`, `month`, and `is_holiday_flag`.
 
 
 
