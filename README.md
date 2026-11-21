@@ -253,12 +253,24 @@ The exploratory analysis highlighted three important characteristics of the data
 These findings motivated the development of time-based and calendar-related features for the machine learning models.
 
 <img width="669" height="490" alt="image" src="https://github.com/user-attachments/assets/f5bdfb12-ec67-470c-a603-6c7ff37cc83e" />
+Average traffic by hour
+
+avg_traffic_by_hour.png
 
 <img width="700" height="476" alt="image" src="https://github.com/user-attachments/assets/2acd8e18-0ab9-47d5-be8e-9c0ba7c13b76" />
+Holiday and weekly patterns
+
+Holiday_traffic_pattern.png
 
 <img width="614" height="460" alt="image" src="https://github.com/user-attachments/assets/fd7526e2-77ff-4154-952c-abb17deb0414" />
+Traffic by weather type
+
+traffic_vol_by_weather_types.png
 
 <img width="608" height="454" alt="image" src="https://github.com/user-attachments/assets/e1d3f6c0-9bdd-420b-9bac-b10af15475c0" />
+Holiday comparison
+
+box_plot_by_holiday.png
 
 
 
